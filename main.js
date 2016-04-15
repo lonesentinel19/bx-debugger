@@ -12,10 +12,13 @@ var args = process.argv.slice(2);
 var errors = "";
 
 var main = function() {
+	var strict;
 	file   = args[0];
 	// ensure that args is long enough
-	if ( args.length > 0 && args[1] == "strict") {
+	if ( args.length > 0 && args[1].toLowerCase() == "strict") {
 		strict = true;
+	} else {
+		strict = false;
 	}
 
 	if (file != null) {
@@ -39,7 +42,7 @@ var main = function() {
 // push this into a string-split array
 var read = function(text, num) {
 	if (text.indexOf("REM Error") > -1) {
-		errors = errors + num + ": " + text + ",";
+		errors = errors + "Line " + (num+1) + ": " + text + ",";
 	}
 }
 
@@ -55,4 +58,8 @@ var finish = function() {
 }
 
 // call main function -- somewhat C-like
-main();
+if ( args.length > 0 ) {
+	main();
+} else {
+	basic.njs_write("Not enough arguments supplied.");
+}
