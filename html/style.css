@@ -1,5 +1,23 @@
+/* This is rather ugly, but it is just a basic generated output - no need to make
+ * it particularly nice-looking.
+ */
+html {
+	font-family: 'Segoe UI';
+	}
+
 .warning {
 	background-color: orange;
 	border: 1px solid black;
-	margin: 2px;
+	font-size: 14pt;
+	margin: 3px;
+	}
+
+h2 {
+	font-size: 26pt;
+	font-weight: 500;
+	margin-bottom: -3px;
+	}
+
+body {
+	background-color: beige !important;
 	}
