@@ -1,4 +1,4 @@
-/* bx-debugger v0.1 by lonesentinel19 
+/* bx-debugger v1.0a by lonesentinel19 
  * This program uses only synchronous functions because writing callbacks
  * can be ugly and unnecessary on such a small program like this where 
  * things operating in sync is important. 
@@ -7,6 +7,7 @@
 var basic = require('./src/basic.js');
 var fs = require('fs');
 var html = require('./src/html.js');
+var config = require('./src/config.js');
 
 var args = process.argv.slice(2);
 var errors = "";
@@ -15,8 +16,11 @@ var main = function() {
 	var strict;
 	file   = args[0];
 	// ensure that args is long enough
-	if ( args.length > 0 && args[1].toLowerCase() == "strict") {
-		strict = true;
+	// Right now any value for arg1 will result in strictmode
+	if ( args.length > 0 ) {
+		if ( args[1] == "strict" || args[1] == "true") {
+			strict = true;
+		}
 	} else {
 		strict = false;
 	}
@@ -32,11 +36,19 @@ var main = function() {
 	if (text != null) {
 		lines = text.split("\n");
 		for ( i = 0; i < lines.length; i++ ) {
+			// get version from batx file, then check to ensure it is inside version boundaries
+			if ( i == 0 ) {
+				var batchx_version = parseInt(lines[0].split("BatchX")[1], 10); // extract version and parse
+				if ( batchx_version < config.batx_min_version || batchx_version > config.batx_max_version) {
+					basic.throwError("BatchX is too old or too new of a version. Please update bx-debugger or batchx." +
+						"\n Min BatchX Version: " + config.batx_min_version + " | Max BatchX version: " + config.batx_max_version)
+				}
+			}
 			read(lines[i], i);
-				//finish();
 		}
 	}
-		finish();
+
+	finish();
 } 
 
 // push this into a string-split array
