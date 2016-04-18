@@ -1,7 +1,9 @@
-/* bx-debugger v1.0a by lonesentinel19 
+/* bx-debugger v1.0a by lonesentinel19
  * This program uses only synchronous functions because writing callbacks
- * can be ugly and unnecessary on such a small program like this where 
- * things operating in sync is important. 
+ * can be ugly and unnecessary on such a small program like this where
+ * things operating in sync is important.
+ *
+ * @todo Append file, date (ddmmyy) and time (hhmm) to output file name.
  */
 
 var basic = require('./src/basic.js');
@@ -25,8 +27,20 @@ var main = function() {
 		strict = false;
 	}
 
-	if (file != null) {
-		try { 
+	// To clear the html folder we just delete and recreate
+	if ( args[0] == "clear" ) {
+		try {
+			basic.deleteFolderRecursive('html');
+			fs.mkdirSync('html');
+			throw "./html folder cleaned."; // use throw to kill the program.
+		} catch (e) {
+			throw "Error attempting to clean ./html folder."
+		}
+	}
+
+  // Otherwise, once condiitons have been set forth, continue
+	if (file != null && args[0] !== "clear" ) {
+		try {
 			text = fs.readFileSync(file, 'utf8');
 		} catch ( e ) {
 			basic.throwError("An error occurred trying to read the file.", e);
@@ -49,7 +63,7 @@ var main = function() {
 	}
 
 	finish();
-} 
+}
 
 // push this into a string-split array
 var read = function(text, num) {
@@ -58,15 +72,16 @@ var read = function(text, num) {
 	}
 }
 
-// output 
+// output
 var finish = function() {
+	var now = Date.now(); // There needs to be one unified timestamp to use
 	var formattedErrors = "";
 	allErrors = errors.split(',');
 	for ( i = 0; i < allErrors.length; i++ ) {
 		formattedErrors = formattedErrors + html.format(allErrors[i]);
 	}
-	html.outputFile(formattedErrors);
-	basic.njs_write("Report outputted to ./html/output.html")
+	html.outputFile(formattedErrors, file, now);
+	basic.njs_write("Report outputted to ./html/output-" + file + "-" + now + ".html")
 }
 
 // call main function -- somewhat C-like
