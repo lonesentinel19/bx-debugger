@@ -16,7 +16,9 @@ exports.format = function(error) {
 	return "<div class='warning'>" + error + "</div>\r\n";
 }
 
+exports.outputFile = function(text, file, time) {
 	try {
+		fs.writeFileSync('html/output-' + file + '-' + time + '.html', exports.header() + text + exports.footer());
 	} catch (e) {
 		throw "An error occurred trying to generate the output file.";
 	}
