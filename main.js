@@ -2,8 +2,6 @@
  * This program uses only synchronous functions because writing callbacks
  * can be ugly and unnecessary on such a small program like this where
  * things operating in sync is important.
- *
- * @todo Append file, date (ddmmyy) and time (hhmm) to output file name.
  */
 
 var basic = require('./src/basic.js');
@@ -68,7 +66,7 @@ var main = function() {
 // push this into a string-split array
 var read = function(text, num) {
 	if (text.indexOf("REM Error") > -1) {
-		errors = errors + "Line " + (num+1) + ": " + text + ",";
+		errors = errors + "Line " + (num+1) + ": " + text + "$$,$$"; // use unique split delimeters
 	}
 }
 
@@ -76,7 +74,7 @@ var read = function(text, num) {
 var finish = function() {
 	var now = Date.now(); // There needs to be one unified timestamp to use
 	var formattedErrors = "";
-	allErrors = errors.split(',');
+	allErrors = errors.split('$$,$$');
 	for ( i = 0; i < allErrors.length; i++ ) {
 		formattedErrors = formattedErrors + html.format(allErrors[i]);
 	}

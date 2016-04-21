@@ -11,8 +11,7 @@ One must first have NodeJS v5 or above installed to the computer and PATH. Then,
 		[filename] : name of file (e.g: "myfile.bat")
 		[strict] : strict mode, to enable: "strict" or "true"
 		[clear] : instead of entering in the filename, one can enter in "clear", which will clean the ./html folder
-
-
+							e.g: > node main.js clear
 
 Strict mode will enable additional debugging information, but this feature is not yet available.
 
@@ -26,4 +25,5 @@ it should not break.
 There is something inherently appealing about writing backend JavaScript.
 
 ### HTML Output
-For easy viewing, a stylized version of the debugging report is available in the "html" folder and is named "output.html".
+For easy viewing, a stylized version of the debugging report is available in the "html" folder and is named "output-[file]-[time].html". The output
+file name uses the current UTC time to avoid collisions.
