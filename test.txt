@@ -1,3 +1,4 @@
 REM BatchX 31
 REM Error hi
+class { 
 REM Error bye

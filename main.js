@@ -8,9 +8,10 @@ var basic = require('./src/basic.js');
 var fs = require('fs');
 var html = require('./src/html.js');
 var config = require('./src/config.js');
+var open = require('opener');
 
 var args = process.argv.slice(2);
-var errors = "";
+var errors = "", brackets, bracketLine;
 
 var main = function() {
 	var strict;
@@ -68,6 +69,17 @@ var read = function(text, num) {
 	if (text.indexOf("REM Error") > -1) {
 		errors = errors + "Line " + (num+1) + ": " + text + "$$,$$"; // use unique split delimeters
 	}
+	/* Check for open brackets */
+	if ( text.indexOf("{") > 5 ) {
+		brackets = true;
+		bracketLine = num;
+	}
+
+	if ( text.indexOf("}") > -1 ) {
+		brackets = false;
+		bracketLine = 0;
+	}
+
 }
 
 // output
@@ -78,8 +90,12 @@ var finish = function() {
 	for ( i = 0; i < allErrors.length; i++ ) {
 		formattedErrors = formattedErrors + html.format(allErrors[i]);
 	}
+	if ( brackets == true ) {
+		formattedErrors = formattedErrors + html.format('Line ' + bracketLine + ': Unclosed brackets were detected.');
+	}
 	html.outputFile(formattedErrors, file, now);
 	basic.njs_write("Report outputted to ./html/output-" + file + "-" + now + ".html")
+	open('./html/output-' + file + "-" + now + ".html");
 }
 
 // call main function -- somewhat C-like
