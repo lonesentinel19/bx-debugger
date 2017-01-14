@@ -8,13 +8,14 @@ var basic = require('./src/basic.js');
 var fs = require('fs');
 var html = require('./src/html.js');
 var config = require('./src/config.js');
+var patchr = require('./src/patchr.js');
 var open = require('opener');
 
 var args = process.argv.slice(2);
 var errors = "", brackets, bracketLine;
 
 var main = function() {
-	var strict;
+	var strict = false, patchr_enabled = false;
 	file   = args[0];
 	// ensure that args is long enough
 	// Right now any value for arg1 will result in strictmode
@@ -22,10 +23,10 @@ var main = function() {
 		if ( args[1] == "strict" || args[1] == "true") {
 			strict = true;
 		}
-	} else {
-		strict = false;
+		if ( args[1] == "patchr" || args[2] == "patchr" ) {
+			patchr_enabled = true;
+		}
 	}
-
 	// To clear the html folder we just delete and recreate
 	if ( args[0] == "clear" ) {
 		try {
@@ -66,11 +67,16 @@ var main = function() {
 
 // push this into a string-split array
 var read = function(text, num) {
+	var errorMsg;
 	if (text.indexOf("REM Error") > -1) {
-		errors = errors + "Line " + (num+1) + ": " + text + "$$,$$"; // use unique split delimeters
+		if ( patchr_enabled = true ) {
+			errorMsg = text.split('REM Error ')[1];
+			out = patchr.fix(errorMsg.trim());
+		}
+		errors = errors + "Line " + (num+1) + ": " + text + out + "$$,$$"; // use unique split delimeters
 	}
 	/* Check for open brackets */
-	if ( text.indexOf("{") > 5 ) {
+	if ( text.indexOf("{") > 2 ) { // 5
 		brackets = true;
 		bracketLine = num;
 	}

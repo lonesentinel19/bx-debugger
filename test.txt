@@ -1,4 +1,11 @@
 REM BatchX 31
-REM Error hi
+REM Error File size exceeds 2048 lines, please split into many files.
 class { 
-REM Error bye
+
+sfsf
+sf
+sf
+sf
+sf
+}
+REM Error Not enough arguments provided.
