@@ -17,23 +17,23 @@ patch.identifyAndSolve = function(msg){
 		case "Classes have duplicate names.":
 			err = 3;
 			break;
-		case 4:
-			err = "Use of protected class variable: Line " + line;
+		case "Use of protected class variable: Line": // fix
+			err = 4
 			break;
 		case 5:
-			err = "Not enough arguments supplied for function at line " + line;
+			err = "Not enough arguments supplied for function at line " + line; // fix
 			break;
-		case 6:
-			err = "Arrays: Ensure that array and values exist.";
+		case "Arrays: Ensure that array and values exist.":
+			err = 6;
 			break;
-		case 7:
-			err = "Transpiler variable might not exist.";
+		case "Transpiler variable might not exist.":
+			err = 7;
 			break;
-		case 8:
-			err = "tar: ensure that you have two arguments and no spaces between arguments.";
+		case "tar: ensure that you have two arguments and no spaces between arguments.":
+			err = 8;
 			break;
-		case 9:
-			err = "free: ensure that there is one argument and that the variable exists.";
+		case "free: ensure that there is one argument and that the variable exists.":
+			err = 9;
 			break;
 	}
 	return err;

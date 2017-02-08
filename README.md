@@ -1,6 +1,6 @@
 # bx-debugger
-A NodeJS BatchX debugger.
-
+A NodeJS BatchX debugger for BatchX versions <0.4.0. This is currently not compatible
+with versions 1.0.
 ## About
 This will accept a transpiled .bat file and read errors that have been placed there by BatchX. The warnings will be gathered and then outputted in a formatted .html file for easy reading.
 
